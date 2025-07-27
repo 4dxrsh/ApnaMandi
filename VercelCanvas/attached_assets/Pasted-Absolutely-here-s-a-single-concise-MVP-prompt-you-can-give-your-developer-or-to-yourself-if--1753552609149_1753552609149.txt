@@ -1,0 +1,96 @@
+Absolutely — here's a **single, concise MVP prompt** you can give your developer (or to yourself if you're building it). Just copy and paste:
+
+---
+
+## 🛠️ **Apna Mandi – MVP Prompt**
+
+Build a **role-based web application** called **Apna Mandi** using **React + Tailwind CSS + Supabase**, hosted on **Vercel**. It should support two types of users: `VENDOR` (Street Food Vendor) and `PARTNER` (Procurement Partner).
+
+### 🔐 Authentication
+
+* Use **Supabase Auth** with OTP-based login (mobile number).
+* On first login, prompt the user to choose:
+
+  * “I am a Food Vendor” → assign `role: VENDOR`
+  * “I want to be a Partner” → assign `role: PARTNER` and set `status: PENDING`
+* Store role in `users` table or Supabase metadata.
+* Block access to the partner dashboard unless `status: APPROVED`.
+
+---
+
+### 🛍️ Vendor Dashboard (role: VENDOR)
+
+After login, show a dashboard with:
+
+1. **Place Order** button
+
+   * Static catalog of 3–5 items (e.g., Onions, Potatoes, Oil)
+   * Quantity selectors
+   * Submit creates an order with `status: PLACED`
+2. **Order Status Tracker**
+
+   * Show visual status: `Placed → Procuring → On The Way → Delivered`
+3. **Previous Orders**
+
+   * List of past orders with “Reorder” option
+
+---
+
+### 🚚 Partner Dashboard (role: PARTNER, status: APPROVED)
+
+After login, show:
+
+1. **Procurement List**
+
+   * Aggregated order quantities across vendors (e.g., “Onions: 120 kg”)
+
+2. **Price Input**
+
+   * Partner inputs actual mandi price per item
+   * System recalculates bill for each vendor:
+
+     ```
+     total = quantity × actual_price + ₹40 convenience fee
+     ```
+
+3. **Delivery Management**
+
+   * List of all vendor orders
+   * Mark each one as “Delivered” and enter payment received
+
+4. **Earnings Summary**
+
+   * Total convenience fees earned from completed deliveries
+
+---
+
+### 🧱 Database Schema (Simplified)
+
+* `users`: id, phone, role, status, name, stall info, etc.
+* `products`: id, name, unit
+* `orders`: id, user\_id, status, created\_at
+* `order_items`: order\_id, product\_id, quantity
+* `procurement_prices`: product\_id, price, date
+* `deliveries`: order\_id, delivered\_at, payment\_received
+
+---
+
+### ✅ MVP Completion Criteria
+
+* Vendors can place orders and view status
+* Partner sees aggregated list and updates prices
+* Bills are auto-calculated
+* Partner marks deliveries and logs payments
+* Basic earnings summary for partner
+
+---
+
+**Tech Stack:**
+
+* Frontend: React + Tailwind CSS
+* Backend & DB: Supabase (Auth, RLS, PostgreSQL)
+* Hosting: Vercel
+
+---
+
+Let me know if you want a Figma mockup, UI component breakdown, or prebuilt repo boilerplate too.
